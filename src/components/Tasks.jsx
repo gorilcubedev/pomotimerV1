@@ -1,5 +1,5 @@
-import React from 'react';
-import { Plus } from 'lucide-react';
+ import React, { useState, useRef } from 'react';
+import { Plus, Upload } from 'lucide-react';
 
 export default function Tasks({
   tasks,
@@ -16,8 +16,12 @@ export default function Tasks({
   editingText,
   handleEditKeyPress,
   activeTaskId,
-  setActiveTask
+  onImportTasks
 }) {
+
+
+
+
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter(task => task.completed).length;
   const totalPomodoros = tasks.reduce((sum, task) => sum + task.pomodoros, 0);
@@ -27,21 +31,59 @@ export default function Tasks({
       <div className="tasks-header-section">
         <h2 className="tasks-header">Tasks</h2>
 
-        {/* Task Statistics */}
-        <div className="task-stats">
-          <div className="stat-item">
-            <span className="stat-number">{totalTasks}</span>
-            <span className="stat-label">Total</span>
+       {/* Task Statistics */}
+         <div className="task-stats">
+           <div className="stat-item">
+             <span className="stat-number">{totalTasks}</span>
+             <span className="stat-label">Total</span>
+           </div>
+           <div className="stat-item">
+             <span className="stat-number">{completedTasks}</span>
+             <span className="stat-label">Completed</span>
+           </div>
+           <div className="stat-item">
+             <span className="stat-number">{totalPomodoros}</span>
+             <span className="stat-label">🍅</span>
+           </div>
+         </div>
+
+          {/* Import Actions */}
+           <div className="task-actions-header">
+             <div className="import-container">
+               <label className="btn btn-import">
+                 <Upload size={16} />
+                 Import
+                 <input
+                   type="file"
+                   accept=".json,.csv,.md,.txt"
+                   onChange={(e) => {
+                     const file = e.target.files[0];
+                     if (file) {
+                       onImportTasks(file);
+                     }
+                     e.target.value = ''; // Reset input
+                   }}
+                   style={{ display: 'none' }}
+                 />
+               </label>
+               <div className="import-formats">
+                 <span className="import-formats-text">Accepted: JSON, CSV, Markdown (.md/.txt)</span>
+                 <div className="import-format-details">
+                   <div className="format-header">Expected File Formats:</div>
+                   <div className="format-example">
+                     <strong>JSON:</strong> <code>{"{tasks: [{id, text, completed, pomodoros}]"}</code>
+                   </div>
+                   <div className="format-example">
+                     <strong>CSV:</strong> <code>ID,Text,Completed,Pomodoros</code>
+                   </div>
+                   <div className="format-example">
+                     <strong>Markdown:</strong> <code>- [ ] Not Completed Task  </code>
+                     <code>- [x]  Completed Task </code>
+                   </div>
+                 </div>
+               </div>
+            </div>
           </div>
-          <div className="stat-item">
-            <span className="stat-number">{completedTasks}</span>
-            <span className="stat-label">Completed</span>
-          </div>
-          <div className="stat-item">
-            <span className="stat-number">{totalPomodoros}</span>
-            <span className="stat-label">🍅</span>
-          </div>
-        </div>
       </div>
 
       {/* Add Task Input */}
@@ -96,9 +138,7 @@ export default function Tasks({
                   <span className={`task-text ${task.completed ? 'completed' : ''}`}>
                     {task.text}
                   </span>
-                  <div className="task-info">
-                    <span className="pomodoro-count">Pomodoro {task.pomodoros}</span>
-                  </div>
+                  
                 </div>
               )}
 

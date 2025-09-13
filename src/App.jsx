@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Timer, Tasks, SettingsModal, Quote } from './components';
+import { Timer, Tasks, SettingsModal, Quote, ShortcutsBar, ToastNotification } from './components';
 
 export default function App() {
   const [customDurations, setCustomDurations] = useState(() => {
@@ -16,8 +16,19 @@ export default function App() {
     return defaultDurations;
   });
 
-  const FOCUS_DURATION = customDurations.focus * 60; // Custom focus duration in seconds
-  const BREAK_DURATION = customDurations.break * 60;   // Custom break duration in seconds
+   const FOCUS_DURATION = customDurations.focus * 60; // Custom focus duration in seconds
+   const BREAK_DURATION = customDurations.break * 60;   // Custom break duration in seconds
+
+   const shortcuts = [
+     { key: 'Space/Enter', icon: '▶️', label: 'Start/Pause' },
+     { key: 'R', icon: '🔄', label: 'Reset' },
+     { key: 'S', icon: '⏭️', label: 'Skip Phase' },
+     { key: 'M', icon: '🔇', label: 'Mute' },
+     { key: 'F', icon: '⛶', label: 'Fullscreen' },
+     { key: 'H', icon: '❓', label: 'Toggle Help' },
+     { key: 'N', icon: '📝', label: 'Add Task' },
+     { key: 'Ctrl+R', icon: '🔢', label: 'Reset Session' }
+   ];
 
   const [timeLeft, setTimeLeft] = useState(FOCUS_DURATION);
   const [isRunning, setIsRunning] = useState(false);
@@ -41,24 +52,27 @@ export default function App() {
   const [editingText, setEditingText] = useState('');
   const [activeTaskId, setActiveTaskId] = useState(null);
   const [quote, setQuote] = useState({ quote: '', author: '' });
-  const [showSettingsModal, setShowSettingsModal] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(() => {
-    const saved = localStorage.getItem('soundEnabled');
-    return saved ? JSON.parse(saved) : true;
-  });
+   const [showSettingsModal, setShowSettingsModal] = useState(false);
+   const [showHelp, setShowHelp] = useState(true);
+   const [soundEnabled, setSoundEnabled] = useState(() => {
+     const saved = localStorage.getItem('soundEnabled');
+     return saved ? JSON.parse(saved) : true;
+   });
   const [playingSound, setPlayingSound] = useState(null); // 'focus', 'break', or null
   const [pomodoroCount, setPomodoroCount] = useState(() => {
     const saved = localStorage.getItem('pomodoroCount');
     return saved ? parseInt(saved) : 0;
   });
   const [resetFocusNumber, setResetFocusNumber] = useState(false);
-  // Calculate current cycle based on completed pomodoros
-  const currentCycle = pomodoroCount + 1;
+  const [isResetting, setIsResetting] = useState(false);
+  const [toast, setToast] = useState({ show: false, message: '', type: '' });
+
   const [breakType, setBreakType] = useState(null); // 'short', 'long', or null
-  const intervalRef = useRef(null);
-  const focusSound = useRef(new Audio('/focus-complete.mp3'));
-  const breakSound = useRef(new Audio('/break-complete.mp3'));
-  const prevDurationsRef = useRef({ focus: 25, break: 5 });
+   const intervalRef = useRef(null);
+   const focusSound = useRef(new Audio('/focus-complete.mp3'));
+   const breakSound = useRef(new Audio('/break-complete.mp3'));
+   const prevDurationsRef = useRef({ focus: 25, break: 5 });
+   const resetPressedRef = useRef(false);
 
   // Helper function to play sounds with error handling
   const playSound = useCallback(async (audio) => {
@@ -182,6 +196,11 @@ export default function App() {
       intervalRef.current = setInterval(() => {
         setTimeLeft((prev) => {
             if (prev <= 1) {
+              // If reset was pressed, don't run completion logic
+              if (resetPressedRef.current) {
+                return customDurations.focus * 60;
+              }
+
               setIsRunning(false);
 
               // Play appropriate sound
@@ -235,12 +254,17 @@ export default function App() {
 
   const handleStart = () => setIsRunning(true);
   const handlePause = () => setIsRunning(false);
-  const handleReset = () => {
-    setIsRunning(false);
-    setIsBreak(false);
-    setBreakType(null);
-    setTimeLeft(customDurations.focus * 60);
-  };
+   const handleReset = () => {
+     resetPressedRef.current = true;
+     setIsRunning(false);
+     setIsBreak(false);
+     setBreakType(null);
+     setTimeLeft(customDurations.focus * 60);
+     // Reset the flag after a short delay to allow the timer effect to process
+     setTimeout(() => {
+       resetPressedRef.current = false;
+     }, 100);
+   };
 
   const handleSkip = () => {
     setIsRunning(false);
@@ -300,14 +324,150 @@ export default function App() {
     }, 100); // Small delay for audio cleanup
   };
 
-  const handleCycleReset = () => {
-    setPomodoroCount(0);
-    setBreakType(null);
-    setResetFocusNumber(prev => !prev); // Toggle to trigger reset in Timer component
-    if (!isRunning) {
-      setIsBreak(false);
-      setTimeLeft(customDurations.focus * 60);
-    }
+   const handleCycleReset = () => {
+      setIsResetting(true); // Prevent increment during reset
+      setPomodoroCount(0);
+      setBreakType(null);
+      setResetFocusNumber(prev => !prev); // Toggle to trigger reset in Timer component
+      if (!isRunning) {
+        setIsBreak(false);
+        setTimeLeft(customDurations.focus * 60);
+      }
+      // Clear flag after state updates
+      setTimeout(() => setIsResetting(false), 0);
+    };
+
+  // Function to show toast notifications
+  const showToast = (message, type = 'info') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => setToast({ show: false, message: '', type: '' }), 2500);
+  };
+
+
+
+  // Import tasks from file
+  const importTasks = (file) => {
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      try {
+        let importedTasks = [];
+        const fileContent = e.target.result;
+        const fileName = file.name.toLowerCase();
+
+        if (fileName.endsWith('.json')) {
+          // JSON import
+          const data = JSON.parse(fileContent);
+
+          if (data.tasks && Array.isArray(data.tasks)) {
+            importedTasks = data.tasks.map(task => ({
+              id: task.id || Date.now() + Math.random(),
+              text: task.text || '',
+              completed: Boolean(task.completed),
+              pomodoros: Number(task.pomodoros) || 0
+            }));
+          } else {
+            throw new Error('Invalid JSON format: missing tasks array');
+          }
+
+        } else if (fileName.endsWith('.csv')) {
+          // CSV import
+          const lines = fileContent.split('\n').filter(line => line.trim());
+          if (lines.length < 2) throw new Error('CSV file must have at least a header row and one data row');
+
+          const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+          const requiredHeaders = ['id', 'text', 'completed', 'pomodoros'];
+
+          // Check if required headers exist (flexible order)
+          const missingHeaders = requiredHeaders.filter(h => !headers.includes(h));
+          if (missingHeaders.length > 0) {
+            throw new Error(`Missing required columns: ${missingHeaders.join(', ')}`);
+          }
+
+          importedTasks = lines.slice(1).map((line, index) => {
+            const values = line.split(',').map(v => v.trim());
+            return {
+              id: parseInt(values[headers.indexOf('id')]) || Date.now() + index,
+              text: values[headers.indexOf('text')].replace(/^"|"$/g, '').replace(/""/g, '"'),
+              completed: values[headers.indexOf('completed')].toLowerCase() === 'yes' || values[headers.indexOf('completed')] === 'true',
+              pomodoros: parseInt(values[headers.indexOf('pomodoros')]) || 0
+            };
+          });
+
+        } else if (fileName.endsWith('.md') || fileName.endsWith('.txt')) {
+          // Markdown/Text import
+          const lines = fileContent.split('\n').filter(line => line.trim());
+
+          importedTasks = lines.map((line, index) => {
+            // Match patterns like: - [ ] Task text (🍅🍅) or - [x] Task text (🍅🍅)
+            const checkboxMatch = line.match(/^\s*-\s*\[([ x])\]\s*(.+?)(?:\s*\(🍅*(\d*)\))?\s*$/);
+
+            if (checkboxMatch) {
+              const [, checked, text, pomodoroCount] = checkboxMatch;
+              return {
+                id: Date.now() + index,
+                text: text.trim(),
+                completed: checked === 'x',
+                pomodoros: pomodoroCount ? parseInt(pomodoroCount) : 0
+              };
+            }
+
+            // If no checkbox pattern found, try to extract just the text
+            const textMatch = line.match(/^\s*-\s*(.+?)(?:\s*\(🍅*(\d*)\))?\s*$/);
+            if (textMatch) {
+              const [, text, pomodoroCount] = textMatch;
+              return {
+                id: Date.now() + index,
+                text: text.trim(),
+                completed: false,
+                pomodoros: pomodoroCount ? parseInt(pomodoroCount) : 0
+              };
+            }
+
+            return null;
+          }).filter(task => task !== null);
+
+          if (importedTasks.length === 0) {
+            throw new Error('No valid tasks found in the markdown file. Use format: - [ ] Task text (🍅🍅)');
+          }
+
+        } else {
+          throw new Error('Unsupported file format. Please use JSON, CSV, or Markdown files.');
+        }
+
+        // Validate imported tasks
+        const validTasks = importedTasks.filter(task =>
+          task.text && task.text.trim().length > 0
+        );
+
+        if (validTasks.length === 0) {
+          throw new Error('No valid tasks found in the imported file');
+        }
+
+        // Handle potential ID conflicts by regenerating IDs for imported tasks
+        const tasksWithNewIds = validTasks.map(task => ({
+          ...task,
+          id: Date.now() + Math.random() * 1000
+        }));
+
+        // Merge with existing tasks
+        setTasks(prevTasks => [...prevTasks, ...tasksWithNewIds]);
+
+        showToast(`Successfully imported ${validTasks.length} task(s)!`, 'success');
+
+      } catch (error) {
+        console.error('Import error:', error);
+        showToast('Import failed: ' + error.message, 'error');
+      }
+    };
+
+    reader.onerror = () => {
+      showToast('Failed to read the file', 'error');
+    };
+
+    reader.readAsText(file);
   };
 
   const addTask = () => {
@@ -369,9 +529,7 @@ export default function App() {
     }
   };
 
-  const setActiveTask = (id) => {
-    setActiveTaskId(activeTaskId === id ? null : id);
-  };
+
 
   const startEditing = (id, currentText) => {
     setEditingTaskId(id);
@@ -470,24 +628,103 @@ export default function App() {
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Cleanup audio on component unmount
-  useEffect(() => {
-    return () => {
-      console.log('Component unmounting, cleaning up audio');
-      stopAllTestSounds();
-    };
-  }, [stopAllTestSounds]);
+   // Cleanup audio on component unmount
+   useEffect(() => {
+     return () => {
+       console.log('Component unmounting, cleaning up audio');
+       stopAllTestSounds();
+     };
+   }, [stopAllTestSounds]);
 
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && showSettingsModal) {
-        setShowSettingsModal(false);
-      }
-    };
+   useEffect(() => {
+     const handleEscape = (e) => {
+       if (e.key === 'Escape' && showSettingsModal) {
+         setShowSettingsModal(false);
+       }
+     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
-  }, [showSettingsModal]);
+     document.addEventListener('keydown', handleEscape);
+     return () => document.removeEventListener('keydown', handleEscape);
+   }, [showSettingsModal]);
+
+   // Keyboard shortcuts
+   useEffect(() => {
+     const handleKeyDown = (e) => {
+       // Don't trigger shortcuts if user is typing in an input
+       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+         return;
+       }
+
+       switch (e.key.toLowerCase()) {
+         case ' ':
+         case 'enter': {
+           e.preventDefault();
+           if (isRunning) {
+             handlePause();
+           } else {
+             handleStart();
+           }
+           break;
+         }
+         case 'r': {
+           if (!e.ctrlKey) {
+             e.preventDefault();
+             handleReset();
+           }
+           break;
+         }
+         case 's': {
+           e.preventDefault();
+           handleSkip();
+           break;
+         }
+          case 'm': {
+            e.preventDefault();
+            const newSoundEnabled = !soundEnabled;
+            setSoundEnabled(newSoundEnabled);
+            showToast(
+              newSoundEnabled ? 'Sound Unmuted 🔊' : 'Sound Muted 🔇',
+              newSoundEnabled ? 'success' : 'warning'
+            );
+            break;
+          }
+         case 'f': {
+           e.preventDefault();
+           if (!document.fullscreenElement) {
+             document.documentElement.requestFullscreen();
+           } else {
+             document.exitFullscreen();
+           }
+           break;
+         }
+         case 'h': {
+           e.preventDefault();
+           setShowHelp(!showHelp);
+           break;
+         }
+         case 'n': {
+           e.preventDefault();
+           // Focus on the task input
+           const taskInput = document.querySelector('.task-input');
+           if (taskInput) {
+             taskInput.focus();
+           }
+           break;
+         }
+         default:
+           break;
+       }
+
+       // Handle Ctrl+R for session reset
+       if (e.ctrlKey && e.key === 'r') {
+         e.preventDefault();
+         handleCycleReset();
+       }
+     };
+
+     document.addEventListener('keydown', handleKeyDown);
+     return () => document.removeEventListener('keydown', handleKeyDown);
+   }, [isRunning, handleStart, handlePause, handleReset, handleSkip, soundEnabled, showHelp, handleCycleReset]);
 
   // Update timer when custom durations actually change (only when not running)
   useEffect(() => {
@@ -567,6 +804,7 @@ export default function App() {
 
   return (
     <div className={`app-container ${isDarkMode ? 'dark' : ''}`}>
+      <ShortcutsBar showHelp={showHelp} shortcuts={shortcuts} />
       <div className="main-content">
         <div className="main-grid">
           {/* Timer Section */}
@@ -585,30 +823,32 @@ export default function App() {
             formatTime={formatTime}
             customDurations={customDurations}
             resetFocusNumber={resetFocusNumber}
+            isResetting={isResetting}
+            handleCycleReset={handleCycleReset}
           />
 
           {/* Tasks Section */}
-          <Tasks
-            tasks={tasks}
-            newTask={newTask}
-            setNewTask={setNewTask}
-            addTask={addTask}
-            toggleTask={toggleTask}
-            deleteTask={deleteTask}
-            startEditing={startEditing}
-            saveEdit={saveEdit}
-            cancelEdit={cancelEdit}
-            editingTaskId={editingTaskId}
-            setEditingText={setEditingText}
-            editingText={editingText}
-            handleEditKeyPress={handleEditKeyPress}
-            activeTaskId={activeTaskId}
-            setActiveTask={setActiveTask}
-          />
-        </div>
+            <Tasks
+              tasks={tasks}
+              newTask={newTask}
+              setNewTask={setNewTask}
+              addTask={addTask}
+              toggleTask={toggleTask}
+              deleteTask={deleteTask}
+              startEditing={startEditing}
+              saveEdit={saveEdit}
+              cancelEdit={cancelEdit}
+              editingTaskId={editingTaskId}
+              setEditingText={setEditingText}
+              editingText={editingText}
+              handleEditKeyPress={handleEditKeyPress}
+              activeTaskId={activeTaskId}
+              onImportTasks={importTasks}
+            />
 
-        {/* Quote Section */}
-        <Quote quote={quote} />
+          {/* Quote Section - spans full width */}
+          <Quote quote={quote} />
+        </div>
       </div>
 
       {/* Settings Modal */}
@@ -619,13 +859,21 @@ export default function App() {
         setCustomDurations={setCustomDurations}
         soundEnabled={soundEnabled}
         setSoundEnabled={setSoundEnabled}
-        pomodoroCount={pomodoroCount}
+
         handleCycleReset={handleCycleReset}
         handleSettingsDone={handleSettingsDone}
         testSound={testSound}
         playingSound={playingSound}
         isRunning={isRunning}
         stopAllTestSounds={stopAllTestSounds}
+      />
+
+      {/* Toast Notification */}
+      <ToastNotification
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast({ show: false, message: '', type: '' })}
       />
     </div>
   );

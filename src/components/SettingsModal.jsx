@@ -8,7 +8,6 @@ export default function SettingsModal({
   setCustomDurations,
   soundEnabled,
   setSoundEnabled,
-  pomodoroCount,
   handleCycleReset,
   handleSettingsDone,
   testSound,
@@ -115,44 +114,6 @@ export default function SettingsModal({
                 Enable Sound Notifications
               </label>
             </div>
-
-            {/* Cycle Reset */}
-            <div className="form-group" style={{width: '350px', justifyContent: 'normal'}}>
-              <div className="cycle-reset-section">
-                <button
-                  onClick={handleCycleReset}
-                  className="btn btn-reset-cycle"
-                  type="button"
-                >
-                  Reset Cycle Counter
-                </button>
-              </div>
-            </div>
-
-            {/* Test Sound Buttons */}
-            {soundEnabled && (
-              <div className="form-group">
-                <div className="test-sounds justify-center" style={{ display: 'flex', justifyContent: 'center', gap: '1rem' }}>
-                <button
-                  onClick={() => testSound('focus')}
-                  className={`btn btn-test-sound ${playingSound === 'focus' ? 'playing' : ''}`}
-                  type="button"
-                  disabled={playingSound !== null && playingSound !== 'focus'}
-                >
-                  {playingSound === 'focus' ? '🔊 Playing...' : 'Test Focus Sound'}
-                </button>
-                <button
-                  onClick={() => testSound('break')}
-                  className={`btn btn-test-sound ${playingSound === 'break' ? 'playing' : ''}`}
-                  type="button"
-                  disabled={playingSound !== null && playingSound !== 'break'}
-                >
-                  {playingSound === 'break' ? '🔊 Playing...' : 'Test Break Sound'}
-                </button>
-              </div>
-            </div>
-            )}
-
             <div className="modal-actions" style={{justifyContent: 'center', marginTop: '1rem'}}>
               <button onClick={handleSettingsDone} className="btn btn-secondary">
                 Done

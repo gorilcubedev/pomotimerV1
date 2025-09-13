@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Play, Pause, RotateCcw, SkipForward, Sun, Moon, Settings } from 'lucide-react';
+import { Play, Pause, RotateCcw, SkipForward, Sun, Moon, Settings, RefreshCw } from 'lucide-react';
 
 export default function Timer({
   timeLeft,
@@ -15,32 +15,33 @@ export default function Timer({
   setShowSettingsModal,
   formatTime,
   customDurations,
-  resetFocusNumber
+  resetFocusNumber,
+  isResetting,
+  handleCycleReset
 }) {
   // Focus number tracks which "Focus" session the user is currently on.
   // We increment focusNumber each time a new focus session starts.
   const [focusNumber, setFocusNumber] = useState(1);
   const prevIsBreakRef = useRef(isBreak);
 
-  useEffect(() => {
-    // Reset focusNumber to 1 when cycle is reset
-    if (resetFocusNumber) {
-      setFocusNumber(1);
-    }
-  }, [resetFocusNumber]);
+   useEffect(() => {
+     // Reset focusNumber to 1 when cycle is reset (triggered by any change)
+     setFocusNumber(1);
+   }, [resetFocusNumber]);
 
   useEffect(() => {
-    // Increment focusNumber when transitioning from break to focus
-    // This happens when:
-    // 1. A pomodoro is completed (naturally or by skipping)
-    // 2. A break is skipped
-    // 3. Timer is reset during a break (goes back to focus)
-    if (prevIsBreakRef.current && !isBreak) {
-      setFocusNumber(prev => prev + 1);
-    }
-    
-    prevIsBreakRef.current = isBreak;
-  }, [isBreak]);
+     // Increment focusNumber when transitioning from break to focus
+     // This happens when:
+     // 1. A pomodoro is completed (naturally or by skipping)
+     // 2. A break is skipped
+     // 3. Timer is reset during a break (goes back to focus)
+     // Only increment if not currently resetting
+     if (!isResetting && prevIsBreakRef.current && !isBreak) {
+       setFocusNumber(prev => prev + 1);
+     }
+
+     prevIsBreakRef.current = isBreak;
+   }, [isBreak, isResetting]);
 
   const progress = isBreak
     ? (breakType === 'long'
@@ -103,28 +104,36 @@ export default function Timer({
         </div>
       </div>
 
-      {/* Control Buttons */}
-      <div className="controls">
-        {!isRunning ? (
-          <button onClick={handleStart} className="btn btn-start">
-            <Play />
-            Start
-          </button>
-        ) : (
-          <button onClick={handlePause} className="btn btn-pause">
-            <Pause />
-            Pause
-          </button>
-        )}
-        <button onClick={handleSkip} className="btn btn-skip">
-          <SkipForward />
-          Skip
-        </button>
-        <button onClick={handleReset} className="btn btn-reset">
-          <RotateCcw />
-          Reset
-        </button>
-      </div>
-    </div>
-  );
+       {/* Control Buttons */}
+       <div className="controls">
+         {!isRunning ? (
+           <button onClick={handleStart} className="btn btn-start">
+             <Play />
+             Start
+           </button>
+         ) : (
+           <button onClick={handlePause} className="btn btn-pause">
+             <Pause />
+             Pause
+           </button>
+         )}
+         <button onClick={handleSkip} className="btn btn-skip">
+           <SkipForward />
+           Skip
+         </button>
+         <button onClick={handleReset} className="btn btn-reset">
+           <RotateCcw />
+           Reset
+         </button>
+       </div>
+
+       {/* Reset Cycle Button */}
+       <div className="cycle-reset-section">
+         <button onClick={handleCycleReset} className="btn btn-reset-cycle">
+           <RefreshCw />
+           Reset Cycle
+         </button>
+       </div>
+     </div>
+   );
 }

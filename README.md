@@ -90,10 +90,9 @@ A modern, responsive Pomodoro timer application built with React and Vite that h
 - [✅] Add customizable timer durations
 - [✅] Implement sound notifications
 - [✅] Add long break option (15-30 minutes after 4 Pomodoros)
-- [ ] Create detailed analytics dashboard
-- [ ] Add export/import functionality for tasks
-- [ ] Implement keyboard shortcuts
-- [ ] Add PWA support for mobile installation
+- [✅] Add import functionality for tasks (CSV,JSON)
+- [✅] Implement keyboard shortcuts
+- [✅] Add PWA support for mobile installation
 
 ## Contributing
 
