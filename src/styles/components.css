@@ -1,0 +1,978 @@
+.card {
+  background: var(--bg-secondary);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%;
+  max-width: 30rem;
+  min-height: 650px;
+  max-height: 650px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .card {
+    padding: 1.25rem;
+    border-radius: 0.875rem;
+    min-height: 500px; /* Adjusted for smaller screens */
+    max-height: 750px;
+    max-width: 100%;
+    margin-top: 1.5rem;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .card {
+    padding: 1.5rem;
+    border-radius: 1rem;
+    min-height: 550px; /* Increased to accommodate fixed task list height */
+    max-height: 800px; /* Set max height to prevent excessive expansion */
+    max-width: 100%;
+    margin-top: 2rem;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .card {
+    padding: 1.75rem;
+    min-height: 600px;
+    max-width: 100%;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .card {
+    padding: 2rem;
+    min-height: 600px;
+    max-width: 100%;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .card {
+    padding: 2.25rem;
+    min-height: 650px;
+    max-width: 100%;
+  }
+}
+
+/* Header Styles */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.25rem;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .header h1 {
+    font-size: 1.375rem;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .header h1 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .header h1 {
+    font-size: 1.625rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .header h1 {
+    font-size: 1.75rem;
+  }
+}
+
+.theme-toggle, .settings-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: background-color 0.3s ease;
+}
+
+.theme-toggle:hover, .settings-toggle:hover {
+  background-color: var(--border-light);
+}
+
+.theme-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.timer-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .timer-circle {
+    width: 220px;
+    height: 220px;
+  }
+
+  .timer-container {
+    padding: 0.75rem 0;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .timer-circle {
+    width: 250px;
+    height: 250px;
+  }
+
+  .timer-container {
+    padding: 1rem 0;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .timer-circle {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .timer-circle {
+    width: 300px;
+    height: 300px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .timer-circle {
+    width: 320px;
+    height: 320px;
+  }
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .controls {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    align-items: center;
+  }
+
+  .controls .btn {
+    width: 100%;
+    max-width: 180px;
+    justify-content: center;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .controls {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+  }
+
+  .controls .btn {
+    width: 100%;
+    max-width: 200px;
+    justify-content: center;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .controls {
+    gap: 1.25rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .controls {
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .controls {
+    gap: 1.75rem;
+    margin-bottom: 2.25rem;
+  }
+}
+
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 2rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+  font-size: 1rem;
+  min-height: 44px; /* Minimum touch target size */
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.875rem 1.75rem;
+    border-radius: 0.625rem;
+    font-size: 0.95rem;
+    min-height: 46px;
+    gap: 0.625rem;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .btn {
+    padding: 1rem 2rem;
+    border-radius: 0.75rem;
+    font-size: 1rem;
+    min-height: 48px;
+    gap: 0.75rem;
+  }
+
+  .btn:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .btn {
+    padding: 0.875rem 2.25rem;
+    border-radius: 0.625rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .btn {
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .btn {
+    padding: 0.875rem 2.25rem;
+    border-radius: 0.5rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+.btn-start {
+  background-color: #22c55e;
+  color: white;
+}
+
+.btn-start:hover {
+  background-color: #16a34a;
+}
+
+.btn-pause {
+  background-color: #eab308;
+  color: white;
+}
+
+.btn-pause:hover {
+  background-color: #ca8a04;
+}
+
+.btn-reset {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-reset:hover {
+  background-color: #4b5563;
+}
+
+.btn-add {
+  background-color: #3b82f6;
+  color: white;
+  padding: 0.5rem;
+}
+
+.btn-add:hover {
+  background-color: #2563eb;
+}
+
+.btn-reset-cycle {
+  background-color: #f59e0b;
+  color: white;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.btn-reset-cycle:hover {
+  background-color: #d97706;
+}
+
+/* Cycle Reset Section */
+.cycle-reset-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .cycle-reset-section {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+  }
+
+  .btn-reset-cycle {
+    font-size: 0.9rem;
+    padding: 0.75rem 1.25rem;
+    min-height: 44px;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .cycle-reset-section {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .btn-reset-cycle {
+    font-size: 0.95rem;
+    padding: 0.875rem 1.5rem;
+    min-height: 46px;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .cycle-reset-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+  }
+
+  .btn-reset-cycle {
+    max-width: 250px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .cycle-reset-section {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .btn-reset-cycle {
+    max-width: 280px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .cycle-reset-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+
+  .btn-reset-cycle {
+    max-width: 300px;
+  }
+}
+
+.btn svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.duration-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.sound-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.sound-toggle input[type="checkbox"] {
+  width: 1rem;
+  height: 1rem;
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.test-sounds {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-test-sound {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.btn-test-sound:hover:not(:disabled) {
+  background-color: var(--border-light);
+}
+
+.btn-test-sound.playing {
+  background-color: #10b981;
+  color: white;
+  animation: pulse 1.5s infinite;
+}
+
+.btn-test-sound:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cycle-reset-section {
+  margin-top: 0.5rem;
+}
+
+.cycle-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  background: var(--bg-primary);
+  border-radius: 0.375rem;
+}
+
+.cycle-info-label {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.cycle-info-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.btn-reset-cycle {
+  width: 100%;
+  background-color: #f59e0b;
+  color: white;
+  font-size: 0.875rem;
+  padding: 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+.btn-reset-cycle:hover {
+  background-color: #d97706;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  min-height: 44px; /* Minimum touch target */
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .form-input {
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    min-height: 46px;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .form-input {
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .form-input {
+    padding: 0.625rem 1rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .form-input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .form-input {
+    padding: 0.625rem 1.125rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.tasks-header {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  transition: color 0.3s ease;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .tasks-header {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .tasks-header {
+    font-size: 1.375rem;
+    margin-bottom: 1.25rem;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tasks-header {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .tasks-header {
+    font-size: 1.625rem;
+    margin-bottom: 1.75rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .tasks-header {
+    font-size: 1.75rem;
+    margin-bottom: 2rem;
+  }
+}
+
+.task-stats {
+  display: flex;
+  gap: 1rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.stat-number {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tasks-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.task-input-container {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .task-input-container {
+    flex-direction: column;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+  }
+
+  .task-input-container .btn {
+    align-self: flex-start;
+    width: auto;
+    min-width: 10px;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .task-input-container {
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .task-input-container .btn {
+    align-self: flex-start;
+    width: auto;
+    min-width: 10px;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .task-input-container {
+    gap: 0.875rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .task-input-container {
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .task-input-container {
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+}
+
+.task-input {
+  flex: 1;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+  min-height: 44px; /* Minimum touch target */
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .task-input {
+    padding: 0.625rem 0.875rem;
+    border-radius: 0.5rem;
+    font-size: 0.95rem;
+    min-height: 46px;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .task-input {
+    padding: 0.75rem 1rem;
+    border-radius: 0.625rem;
+    font-size: 1rem;
+    min-height: 48px;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .task-input {
+    padding: 0.625rem 1rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .task-input {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    min-height: 44px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .task-input {
+    padding: 0.625rem 1.125rem;
+    font-size: 1.05rem;
+    min-height: 46px;
+  }
+}
+
+.task-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.task-input::placeholder {
+  color: var(--text-muted);
+  transition: color 0.3s ease;
+}
+
+.no-tasks {
+  text-align: center;
+  color: var(--text-muted);
+  padding: 2rem 0;
+  transition: color 0.3s ease;
+}
+
+.task-list {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  max-height: calc(800px - 200px); /* Adjust based on other elements in the card */
+  scrollbar-width: thin;
+  scrollbar-color: var(--text-muted) var(--border-light);
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .task-list {
+    max-height: 150px; /* Adjusted for smaller screens */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) var(--border-light);
+  }
+
+  .task-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .task-list::-webkit-scrollbar-track {
+    background: var(--border-light);
+    border-radius: 2px;
+  }
+
+  .task-list::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 2px;
+  }
+
+  .task-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+
+  /* Small phone Task Item Adjustments */
+  .task-item {
+    padding: 0.875rem 0.625rem;
+    min-height: 55px;
+    margin-bottom: 0.125rem;
+  }
+
+  .task-item:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .task-list {
+    max-height: 180px; /* Fixed height: 3 tasks × (60px min-height + 4px gap) ≈ 192px, set to 180px for clean fit */
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) var(--border-light);
+  }
+
+  .task-list::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .task-list::-webkit-scrollbar-track {
+    background: var(--border-light);
+    border-radius: 3px;
+  }
+
+  .task-list::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: 3px;
+  }
+
+  .task-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+  }
+
+  /* Large phone Task Item Adjustments */
+  .task-item {
+    padding: 1rem 0.75rem; /* Slightly larger padding for better touch targets */
+    min-height: 60px; /* Consistent minimum height for all tasks */
+    margin-bottom: 0.25rem; /* Reduced spacing for better fit within 180px height */
+  }
+
+  .task-item:last-child {
+    margin-bottom: 0; /* Remove margin from last item */
+  }
+}
+
+.task-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.task-list::-webkit-scrollbar-track {
+  background: var(--border-light);
+  border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+.task-list::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Base Button Styles */
+.btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--border-light);
+  border-radius: 0.375rem;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--bg-hover);
+  border-color: var(--accent);
+}
+
+.btn:active {
+  background: var(--bg-secondary);
+}

@@ -1,0 +1,69 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #374151;
+  --text-muted: #6b7280;
+  --border-color: #d1d5db;
+  --border-light: #e5e7eb;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.dark {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-muted: #9ca3af;
+  --border-color: #374151;
+  --border-light: #4b5563;
+  --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-size: 16px; /* Base font size for mobile */
+  line-height: 1.5;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  body {
+    font-size: 17px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  body {
+    font-size: 18px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  body {
+    font-size: 18px;
+  }
+}

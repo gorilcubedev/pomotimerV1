@@ -1,0 +1,247 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  border-radius: 1rem;
+  padding: 0;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: var(--shadow);
+  animation: slideIn 0.3s ease-out;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0.25rem;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.modal-close:hover {
+  background-color: var(--border-light);
+  color: var(--text-primary);
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.btn-secondary {
+  background-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background-color: var(--border-light);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .tasks-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .task-stats {
+    align-self: stretch;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .duration-controls {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  .header-buttons {
+    gap: 0.2rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 0.75rem;
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .tasks-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .task-stats {
+    align-self: stretch;
+    justify-content: space-around;
+    width: 100%;
+  }
+
+  .duration-controls {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .header-buttons {
+    gap: 0.25rem;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 1rem;
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    padding: 1rem 1.5rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tasks-header-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .task-stats {
+    justify-content: flex-end;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 500px;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .tasks-header-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  .task-stats {
+    justify-content: flex-end;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 600px;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .tasks-header-section {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .task-stats {
+    justify-content: flex-end;
+  }
+
+  .modal-content {
+    width: 90%;
+    max-width: 700px;
+  }
+}

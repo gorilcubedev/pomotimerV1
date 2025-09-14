@@ -64,7 +64,6 @@ A modern, responsive Pomodoro timer application built with React and Vite that h
 
 1. **Starting a session**:
    - Add tasks using the input field in the Tasks section
-   - Click the "▶️" button next to a task to set it as your active task
    - Click the "Start" button to begin the Pomodoro timer
 
 2. **Managing tasks**:
@@ -77,6 +76,7 @@ A modern, responsive Pomodoro timer application built with React and Vite that h
    - **Start**: Begin the timer
    - **Pause**: Pause the timer (timer turns red)
    - **Reset**: Reset the timer to initial state
+   - **Reset Cycle** : Reset the cycle counter
 
 4. **Theme toggle**:
    - Click the Sun/Moon icon in the top right to switch between light and dark modes

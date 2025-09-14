@@ -1,0 +1,176 @@
+.timer-circle {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+}
+
+.timer-circle svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-circle .progress-bg {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 6;
+  transition: stroke 0.3s ease;
+}
+
+.timer-circle .progress-bar {
+  fill: none;
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+}
+
+.timer-circle .progress-bar.focus {
+  stroke: #10b981; 
+}
+
+.timer-circle .progress-bar.break {
+  stroke: #ef4444; 
+}
+
+.timer-circle .progress-bar.long-break {
+  stroke: #7c3aed; 
+}
+
+.timer-circle .progress-bar.paused {
+  stroke: #ef4444; 
+}
+
+.dark .timer-circle .progress-bar.focus {
+  stroke: #10b981; 
+}
+
+.dark .timer-circle .progress-bar.break {
+  stroke: #ef4444; 
+}
+
+.dark .timer-circle .progress-bar.long-break {
+  stroke: #7c3aed;
+}
+
+.dark .timer-circle .progress-bar.paused {
+  stroke: #ef4444; 
+}
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.timer-time {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.timer-label {
+  font-size: 1.125rem;
+  font-weight: 500;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .timer-time {
+    font-size: 2.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .timer-label {
+    font-size: 0.875rem;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .timer-time {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .timer-label {
+    font-size: 1rem;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .timer-time {
+    font-size: 2.75rem;
+    margin-bottom: 0.625rem;
+  }
+
+  .timer-label {
+    font-size: 1.125rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .timer-time {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timer-label {
+    font-size: 1.25rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .timer-time {
+    font-size: 3.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .timer-label {
+    font-size: 1.375rem;
+  }
+}
+
+.timer-label.focus {
+  color: #10b981;
+}
+
+.timer-label.break {
+  color: #ef4444;
+}
+
+.timer-label.long-break {
+  color: #7c3aed; 
+}
+
+.timer-label.paused {
+  color: #ef4444;
+}
+
+.dark .timer-label.focus {
+  color: #10b981;
+}
+
+.dark .timer-label.break {
+  color: #ef4444; 
+}
+
+.dark .timer-label.long-break {
+  color: #7c3aed; 
+}
+
+.dark .timer-label.paused {
+  color: #ef4444; 
+}
+
+.dark .timer-label.paused {
+  color: #ef4444;
+}

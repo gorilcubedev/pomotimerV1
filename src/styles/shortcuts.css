@@ -1,0 +1,171 @@
+.shortcuts-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+  color: var(--text-primary);
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  z-index: 100;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  font-size: 0.875rem;
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+  min-height: 3rem;
+}
+
+.shortcuts-bar.visible {
+  transform: translateY(0);
+}
+
+.shortcut-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+}
+
+.shortcut-icon {
+  font-size: 1rem;
+}
+
+.shortcut-key {
+  background: var(--border-light);
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: monospace;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.shortcut-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Small phone: 0 – 480px */
+@media (max-width: 480px) {
+  .shortcuts-bar {
+    display: none;
+  }
+
+  .shortcut-item {
+    gap: 0.2rem;
+    flex: 0 0 auto;
+  }
+
+  .shortcut-label {
+    display: none;
+  }
+
+  .shortcut-key {
+    padding: 0.15rem 0.35rem;
+    font-size: 0.65rem;
+  }
+
+  .shortcut-icon {
+    font-size: 0.85rem;
+  }
+}
+
+/* Large phone / small tablet: 481 – 767px */
+@media (min-width: 481px) and (max-width: 767px) {
+  .shortcuts-bar {
+    display: none;
+  }
+
+  .shortcut-item {
+    gap: 0.25rem;
+    flex: 0 0 auto;
+  }
+
+  .shortcut-label {
+    display: none;
+  }
+
+  .shortcut-key {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.7rem;
+  }
+
+  .shortcut-icon {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet: 768 – 1024px */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .shortcuts-bar {
+    padding: 0.75rem 1rem;
+    gap: 0.75rem 1.5rem;
+    font-size: 0.8rem;
+    justify-content: center;
+    min-height: 4rem;
+    display: none;
+  }
+
+  .shortcut-item {
+    gap: 0.375rem;
+    flex: 0 0 auto;
+  }
+
+  .shortcut-label {
+    display: block;
+    font-size: 0.8rem;
+  }
+
+  .shortcut-key {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Small laptop / large tablet: 1025 – 1366px */
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .shortcuts-bar {
+    padding: 0.75rem 1rem;
+    gap: 1rem 2rem;
+    font-size: 0.875rem;
+    justify-content: center;
+    min-height: 3rem;
+  }
+
+  .shortcut-item {
+    gap: 0.5rem;
+    flex: 0 0 auto;
+  }
+
+  .shortcut-label {
+    display: block;
+    font-size: 0.875rem;
+  }
+}
+
+/* Desktop / monitor: 1367px and above */
+@media (min-width: 1367px) {
+  .shortcuts-bar {
+    padding: 0.875rem 1.25rem;
+    gap: 1.25rem 2.5rem;
+    font-size: 0.9rem;
+    justify-content: center;
+    min-height: 3.5rem;
+  }
+
+  .shortcut-item {
+    gap: 0.625rem;
+    flex: 0 0 auto;
+  }
+
+  .shortcut-label {
+    display: block;
+    font-size: 0.9rem;
+  }
+}
